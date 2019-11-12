@@ -35,7 +35,7 @@ def calc_side(data):
     if (data['shape'] == 'square'):
         return np.sqrt(data['area'])
     elif (data['shape'] == 'circle'):
-        return np.sqrt(data['area'])/3.14
+        return np.sqrt(data['area']/3.14)
     else:
         return np.sqrt(data['area']/(np.sqrt(3)/4))
         #Assumption: All triangles are equilateral triangles
