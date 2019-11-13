@@ -1,0 +1,76 @@
+The dataframe attached has records of 1,000 objects with 3 columns:
+
+# 1. shape - square, triangle (equilateral) or circle
+
+# 2. color - blue, red, green or yellow
+
+# 3. area - area size in square inches
+
+Questions:
+
+1. Draw a boxplot showing the area size distribution for each shape.
+=> Refer Jupyter notebook attached
+
+2. Calculate the mean, max, and standard deviation of the area size of each color.
+=> Yellow = {mean: 4538.21, max: 31415.9, std dev: 5352.46}
+Blue = {mean: 3208.13, max: 21642.4, std dev: 3039.21}
+Red = {mean: 3815.87, max: 31415.9, std dev: 5092.67}
+Green = {mean: 5761.11, max: 27759.1, std dev: 6695.03}
+
+3. What is the average area size of a yellow square?
+=> 3333.207207
+
+4. Which shape is most likely to be green?
+=> Square
+
+5. Given the fact the the object is red, with an area size larger than 3,000 - what are the chances the object is a square? a triangle? a circle?
+=>
+Chance of this object being a square : 0.168
+Chance of this object being a circle : 0.16
+Chance of this object being a triangle : 0.672
+
+6. Write a function that calculates the side or radius of an object, depending on the shape and area of the object [for an Equilateral triangle - area = (side ^ 2) * sqrt(3) / 4].
+=>
+def calc_side(data):
+    if (data['shape'] == 'square'):
+        return np.sqrt(data['area'])
+    elif (data['shape'] == 'circle'):
+        return np.sqrt(data['area']/3.14)
+    else:
+        return np.sqrt(data['area']/(np.sqrt(3)/4))
+        #Assumption: All triangles are equilateral triangles
+
+7. Add a column to the dataset called "side" that shows the size matching the area in each row, round that number to the closest integer (shape side or radios).
+=> 
+d2['side'] = round(d2.apply(calc_side, axis=1))
+#d2 is the dataframe
+
+8. Draw a boxplot showing the side size distribution for each shape - what can you infer from this plot?
+=> Refer Jupyter notebook
+
+9. Make a scatter plot with "side" on the x axis, "area" on the y axis with a different color for each shape.
+=> Refer jupyter notebook
+
+10. Create a dataframe, table or list that show for each shape:
+
+          a. The proportion of red objects within the shape
+          =>
+                shape	proportion_red	tot_shape
+                triangle	0.506203	403
+                square	0.117400	477
+                circle	0.250000	120
+          
+
+          b. The proportion of blue area out of the shape's total area (sum of square inch blue area of the shape over sum of all shape size).
+          =>
+                shape	blue_area_proportion
+                triangle	0.473886
+                square	0.360385
+                circle	0.061246
+
+11. Create a function that calculates 10. b. for a given shape and color.
+=>
+def color_proportion(data, shape, color):
+    total_shape_area = data['area'][data['shape']==shape].sum()
+    color_shape_area = data['area'][(data['color']==color) & (data['shape']==shape)].sum()
+    return (color_shape_area/total_shape_area)
